@@ -86,8 +86,8 @@ cat.output.CSF.dartel = 0;
 % WMH tissue maps (only for opt.extopts.WMHC==3) - in development
 cat.output.WMH.native  = 0;
 cat.output.WMH.warped  = 0;
-cat.output.WMH.mod     = 1;
-cat.output.WMH.dartel  = 1;
+cat.output.WMH.mod     = 0;
+cat.output.WMH.dartel  = 0;
 
 % stroke lesion tissue maps (only for opt.extopts.SLC>0) - in development
 cat.output.SL.native  = 0;
@@ -107,7 +107,7 @@ cat.output.ct.warped = 0;
 cat.output.ct.dartel = 0;
 
 % jacobian determinant 0/1 (none/yes)
-cat.output.jacobian.warped = 0;
+cat.output.jacobian.warped = 1;
 
 % deformations
 % order is [forward inverse]
@@ -278,4 +278,3 @@ cat.extopts.LAB.HD = 21; % Head
 cat.extopts.LAB.HI = 23; % WM hyperintensities
 cat.extopts.LAB.PH = 25; % Gyrus parahippocampalis
 cat.extopts.LAB.LE = 27; % lesions
- 
