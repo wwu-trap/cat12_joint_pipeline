@@ -11,7 +11,7 @@
       2. rename to cat_defaults.m
       3. replace file in spm12/toolbox/cat12/cat_defaults.m
 4. compile spm12
-   1. start MATLAB (we use R2019a -v96)
+   1. start MATLAB (we use R2019a - v96)
    2. add spm12 dir to path
    3. add cat12 dir to path (recursively)
    4. replace spm_standalone.m from this repo in spm12 dir 
