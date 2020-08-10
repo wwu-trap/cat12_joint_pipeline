@@ -26,27 +26,28 @@ exit_code = 0;
 switch lower(action)
     
     case {'adjust_input'}
-        if nargin ~= 4
-            fprintf('Correct syntax is: adjust_input [input mat] [output mat] [new string]\n');
+        if nargin ~= 5
+            fprintf('Correct syntax is: adjust_input [input mat] [output mat] [input nifti] [spm dir which needs to be replaced]\n');
             exit_code = 1;
         else
             inFile = varargin{2};
             outFile = varargin{3};
             nifti = varargin{4};
+            oldspmdir = varargin{5};
             
             if isfile(inFile) && ~isfile(outFile)
                 job = load(inFile);
                 matlabbatch = job.matlabbatch;
+                matlabbatch = deepreplace(matlabbatch, oldspmdir, strcat(fullfile(spm('dir')), '/'));
                 matlabbatch{1}.spm.tools.cat.estwrite.data = {strcat(nifti, ',1')};
-                matlabbatch{1}.spm.tools.cat.estwrite.opts.tpm = {fullfile(spm('dir'),'tpm','TPM.nii')};
-                matlabbatch{1}.spm.tools.cat.estwrite.extopts.registration.dartel.darteltpm = {fullfile(spm('dir'),'toolbox','cat12','templates_1.50mm','Template_1_IXI555_MNI152.nii')};
+                disp('Using the following paths in given batch with this spm installation')
+                deepstrdisp(matlabbatch, '/')
                 save(outFile, 'matlabbatch');
                 exit(0)
             else
                 fprintf('Either [input mat] does not exist or [output mat] exists already\n')
                 exit_code = 1;
             end
-            
         end
     case {'','pet','fmri','eeg','quit'}
     %----------------------------------------------------------------------
