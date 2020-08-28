@@ -21,4 +21,5 @@
    5. start spm12 by entering `spm fmri` and close the spm12 guis again
    6. cd to spm12/config dir
    7. execute spm_make_standalone in matlab
+   8. if the warning `Warning: A startup.m has been detected in /home/ksarink/matlab.` shows up, please make sure to delete (or move) the startup.m file during the compiling process since this file can break the compiled version
 5. 
