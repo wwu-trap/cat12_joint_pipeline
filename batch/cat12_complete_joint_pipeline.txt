@@ -2,7 +2,7 @@ matlabbatch{1}.spm.tools.cat.estwrite.data = '<UNDEFINED>';
 matlabbatch{1}.spm.tools.cat.estwrite.data_wmh = {''};
 matlabbatch{1}.spm.tools.cat.estwrite.nproc = 0;
 matlabbatch{1}.spm.tools.cat.estwrite.useprior = '';
-matlabbatch{1}.spm.tools.cat.estwrite.opts.tpm = {'/spm-data/Scratch/spielwiese_kelvin/cat12_joint_pipeline/spm12-7771_cat12-r1653_v0005_modifiedcatdefaults/tpm/TPM.nii'};
+matlabbatch{1}.spm.tools.cat.estwrite.opts.tpm = {'/spm-data/Scratch/spielwiese_kelvin/cat12_joint_pipeline/cjp_v0008-spm12_v7771-cat12_r1720-modifiedcatdefaults/tpm/TPM.nii'};
 matlabbatch{1}.spm.tools.cat.estwrite.opts.affreg = 'mni';
 matlabbatch{1}.spm.tools.cat.estwrite.opts.biasstr = 0.5;
 matlabbatch{1}.spm.tools.cat.estwrite.opts.accstr = 0.5;
@@ -17,7 +17,7 @@ matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.WMHC = 1;
 matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.SLC = 0;
 matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.mrf = 1;
 matlabbatch{1}.spm.tools.cat.estwrite.extopts.segmentation.restypes.optimal = [1 0.1];
-matlabbatch{1}.spm.tools.cat.estwrite.extopts.registration.shooting.shootingtpm = {'/spm-data/Scratch/spielwiese_kelvin/cat12_joint_pipeline/spm12-7771_cat12-r1653_v0005_modifiedcatdefaults/toolbox/cat12/templates_volumes/Template_0_IXI555_MNI152_GS.nii'};
+matlabbatch{1}.spm.tools.cat.estwrite.extopts.registration.shooting.shootingtpm = {'/spm-data/Scratch/spielwiese_kelvin/cat12_joint_pipeline/cjp_v0008-spm12_v7771-cat12_r1720-modifiedcatdefaults/toolbox/cat12/templates_volumes/Template_0_IXI555_MNI152_GS.nii'};
 matlabbatch{1}.spm.tools.cat.estwrite.extopts.registration.shooting.regstr = 0.5;
 matlabbatch{1}.spm.tools.cat.estwrite.extopts.vox = 1.5;
 matlabbatch{1}.spm.tools.cat.estwrite.extopts.surface.pbtres = 0.5;
@@ -32,7 +32,7 @@ matlabbatch{1}.spm.tools.cat.estwrite.extopts.surface.close_parahipp = 0;
 matlabbatch{1}.spm.tools.cat.estwrite.extopts.admin.experimental = 0;
 matlabbatch{1}.spm.tools.cat.estwrite.extopts.admin.new_release = 0;
 matlabbatch{1}.spm.tools.cat.estwrite.extopts.admin.lazy = 0;
-matlabbatch{1}.spm.tools.cat.estwrite.extopts.admin.ignoreErrors = 0;
+matlabbatch{1}.spm.tools.cat.estwrite.extopts.admin.ignoreErrors = 1;
 matlabbatch{1}.spm.tools.cat.estwrite.extopts.admin.verb = 2;
 matlabbatch{1}.spm.tools.cat.estwrite.extopts.admin.print = 2;
 matlabbatch{1}.spm.tools.cat.estwrite.output.surface = 1;
@@ -45,6 +45,7 @@ matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.ibsr = 1;
 matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.aal3 = 1;
 matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.mori = 1;
 matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.anatomy = 1;
+matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.julichbrain = 1;
 matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.Schaefer2018_100Parcels_17Networks_order = 1;
 matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.Schaefer2018_200Parcels_17Networks_order = 1;
 matlabbatch{1}.spm.tools.cat.estwrite.output.ROImenu.atlases.Schaefer2018_400Parcels_17Networks_order = 1;
@@ -95,6 +96,7 @@ matlabbatch{1}.spm.tools.cat.estwrite.output.las.warped = 1;
 matlabbatch{1}.spm.tools.cat.estwrite.output.las.dartel = 0;
 matlabbatch{1}.spm.tools.cat.estwrite.output.jacobianwarped = 1;
 matlabbatch{1}.spm.tools.cat.estwrite.output.warps = [1 1];
+matlabbatch{1}.spm.tools.cat.estwrite.output.rmat = 0;
 matlabbatch{2}.spm.tools.cat.stools.surfextract.data_surf(1) = cfg_dep('CAT12: Segmentation (current release): Left Central Surface', substruct('.','val', '{}',{1}, '.','val', '{}',{1}, '.','val', '{}',{1}, '.','val', '{}',{1}), substruct('()',{1}, '.','lhcentral', '()',{':'}));
 matlabbatch{2}.spm.tools.cat.stools.surfextract.area = 0;
 matlabbatch{2}.spm.tools.cat.stools.surfextract.gmv = 0;
@@ -106,7 +108,7 @@ matlabbatch{2}.spm.tools.cat.stools.surfextract.lGI = 0;
 matlabbatch{2}.spm.tools.cat.stools.surfextract.GIL = 0;
 matlabbatch{2}.spm.tools.cat.stools.surfextract.surfaces.IS = 0;
 matlabbatch{2}.spm.tools.cat.stools.surfextract.surfaces.OS = 0;
-matlabbatch{2}.spm.tools.cat.stools.surfextract.norm = 1;
+matlabbatch{2}.spm.tools.cat.stools.surfextract.norm = 0;
 matlabbatch{2}.spm.tools.cat.stools.surfextract.nproc = 0;
 matlabbatch{2}.spm.tools.cat.stools.surfextract.lazy = 0;
 matlabbatch{3}.spm.tools.cat.stools.surfresamp.sample{1}.data_surf(1) = cfg_dep('CAT12: Segmentation (current release): Left Thickness', substruct('.','val', '{}',{1}, '.','val', '{}',{1}, '.','val', '{}',{1}, '.','val', '{}',{1}), substruct('()',{1}, '.','lhthickness', '()',{':'}));
@@ -163,11 +165,11 @@ matlabbatch{11}.spm.tools.cat.stools.surf2roi.cdata{1}(2) = cfg_dep('Extract add
 matlabbatch{11}.spm.tools.cat.stools.surf2roi.cdata{1}(3) = cfg_dep('Extract additional surface parameters: Left fractal dimension', substruct('.','val', '{}',{2}, '.','val', '{}',{1}, '.','val', '{}',{1}, '.','val', '{}',{1}, '.','val', '{}',{1}), substruct('()',{1}, '.','lPFD', '()',{':'}));
 matlabbatch{11}.spm.tools.cat.stools.surf2roi.cdata{1}(4) = cfg_dep('Extract additional surface parameters: Left sulcal depth', substruct('.','val', '{}',{2}, '.','val', '{}',{1}, '.','val', '{}',{1}, '.','val', '{}',{1}, '.','val', '{}',{1}), substruct('()',{1}, '.','lPSD', '()',{':'}));
 matlabbatch{11}.spm.tools.cat.stools.surf2roi.rdata = {
-                                                       '/spm-data/Scratch/spielwiese_kelvin/cat12_joint_pipeline/spm12-7771_cat12-r1653_v0005_modifiedcatdefaults/toolbox/cat12/atlases_surfaces/lh.Schaefer2018_100Parcels_17Networks_order.annot'
-                                                       '/spm-data/Scratch/spielwiese_kelvin/cat12_joint_pipeline/spm12-7771_cat12-r1653_v0005_modifiedcatdefaults/toolbox/cat12/atlases_surfaces/lh.Schaefer2018_200Parcels_17Networks_order.annot'
-                                                       '/spm-data/Scratch/spielwiese_kelvin/cat12_joint_pipeline/spm12-7771_cat12-r1653_v0005_modifiedcatdefaults/toolbox/cat12/atlases_surfaces/lh.Schaefer2018_400Parcels_17Networks_order.annot'
-                                                       '/spm-data/Scratch/spielwiese_kelvin/cat12_joint_pipeline/spm12-7771_cat12-r1653_v0005_modifiedcatdefaults/toolbox/cat12/atlases_surfaces/lh.Schaefer2018_600Parcels_17Networks_order.annot'
-                                                       '/spm-data/Scratch/spielwiese_kelvin/cat12_joint_pipeline/spm12-7771_cat12-r1653_v0005_modifiedcatdefaults/toolbox/cat12/atlases_surfaces/lh.aparc_DK40.freesurfer.annot'
-                                                       '/spm-data/Scratch/spielwiese_kelvin/cat12_joint_pipeline/spm12-7771_cat12-r1653_v0005_modifiedcatdefaults/toolbox/cat12/atlases_surfaces/lh.aparc_HCP_MMP1.freesurfer.annot'
-                                                       '/spm-data/Scratch/spielwiese_kelvin/cat12_joint_pipeline/spm12-7771_cat12-r1653_v0005_modifiedcatdefaults/toolbox/cat12/atlases_surfaces/lh.aparc_a2009s.freesurfer.annot'
+                                                       '/spm-data/Scratch/spielwiese_kelvin/cat12_joint_pipeline/cjp_v0008-spm12_v7771-cat12_r1720-modifiedcatdefaults/toolbox/cat12/atlases_surfaces/lh.Schaefer2018_100Parcels_17Networks_order.annot'
+                                                       '/spm-data/Scratch/spielwiese_kelvin/cat12_joint_pipeline/cjp_v0008-spm12_v7771-cat12_r1720-modifiedcatdefaults/toolbox/cat12/atlases_surfaces/lh.Schaefer2018_200Parcels_17Networks_order.annot'
+                                                       '/spm-data/Scratch/spielwiese_kelvin/cat12_joint_pipeline/cjp_v0008-spm12_v7771-cat12_r1720-modifiedcatdefaults/toolbox/cat12/atlases_surfaces/lh.Schaefer2018_400Parcels_17Networks_order.annot'
+                                                       '/spm-data/Scratch/spielwiese_kelvin/cat12_joint_pipeline/cjp_v0008-spm12_v7771-cat12_r1720-modifiedcatdefaults/toolbox/cat12/atlases_surfaces/lh.Schaefer2018_600Parcels_17Networks_order.annot'
+                                                       '/spm-data/Scratch/spielwiese_kelvin/cat12_joint_pipeline/cjp_v0008-spm12_v7771-cat12_r1720-modifiedcatdefaults/toolbox/cat12/atlases_surfaces/lh.aparc_DK40.freesurfer.annot'
+                                                       '/spm-data/Scratch/spielwiese_kelvin/cat12_joint_pipeline/cjp_v0008-spm12_v7771-cat12_r1720-modifiedcatdefaults/toolbox/cat12/atlases_surfaces/lh.aparc_HCP_MMP1.freesurfer.annot'
+                                                       '/spm-data/Scratch/spielwiese_kelvin/cat12_joint_pipeline/cjp_v0008-spm12_v7771-cat12_r1720-modifiedcatdefaults/toolbox/cat12/atlases_surfaces/lh.aparc_a2009s.freesurfer.annot'
                                                        };
