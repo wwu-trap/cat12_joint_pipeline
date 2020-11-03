@@ -7,7 +7,7 @@ function cat_defaults
 %
 % Care must be taken when modifying this file
 %_______________________________________________________________________
-% $Id: cat_defaults.m 1618 2020-05-13 12:58:08Z gaser $
+% $Id: cat_defaults.m 1715 2020-09-08 15:51:01Z gaser $
 
 clear global cat; 
 global cat
@@ -122,8 +122,11 @@ cat.output.jacobian.warped = 1;
 
 % deformations
 % order is [forward inverse]
-cat.output.warps        = [0 0];
+cat.output.warps      = [0 0];
 
+% transformations
+% order is affine rigid (both forward and inverse)
+cat.output.rmat       = 0;
 
 % Expert options
 %=======================================================================
@@ -152,7 +155,6 @@ cat.extopts.WMHCstr      = 0.5;  % Strength of WM hyperintensity correction:  0 
 cat.extopts.SLC          = 0;    % Stroke lesion correction (SLC):            0 - no correction, 1 - handling of manual lesion that have to be set to zero!
                                  %                                            2 - automatic lesion detection (in development)
 cat.extopts.mrf          = 1;    % MRF weighting:                             0 to 1; <1 - weighting, 1 - auto; default 1
-cat.extopts.INV          = 1;    % Invert PD/T2 images for preprocessing:    0 - no processing, 1 - try intensity inversion, 2 - synthesize T1 image; default 1
 
 % resolution options
 cat.extopts.restype      = 'optimal';    % resolution handling: 'native','fixed','best', 'optimal'
@@ -251,7 +253,8 @@ cat.extopts.add_parahipp   = 0.1; % increase values in the parahippocampal area 
 % visualisation, print, developing, and debugging options
 cat.extopts.colormap     = 'BCGWHw'; % {'BCGWHw','BCGWHn'} and matlab colormaps {'jet','gray','bone',...};
 cat.extopts.verb         = 2;     % verbose output:        1 - default; 2 - details; 3 - write debugging files 
-cat.extopts.ignoreErrors = 1;     % catch errors:          0 - stop with error (default); 1 - catch preprocessing errors (requires MATLAB 2008 or higher); 
+cat.extopts.ignoreErrors = 1;     % catch errors:          0 - stop with error (default); 1 - catch preprocessing errors and proceed with next subject (requires MATLAB 2008 or higher); 
+                                  %                        2 - catch preprocessing errors and try backup function if this also fails then proceed with the next subject (requires MATLAB 2008 or higher)
 cat.extopts.expertgui    = 1;     % control of user GUI:   0 - common user modus with simple GUI; 1 - expert modus with extended GUI; 2 - developer modus with full GUI
 cat.extopts.subfolders   = 1;     % use subfolders such as mri, surf, report, and label to organize your data
 cat.extopts.experimental = 0;     % experimental functions: 0 - default, 1 - call experimental unsafe functions
@@ -283,6 +286,7 @@ cat.extopts.atlas       = { ...
   fullfile(spm('dir'),'toolbox','cat12','templates_volumes','aal3.nii')                1      {'gm'}              1; ... % many regions, but only labeled on one subject 
   fullfile(spm('dir'),'toolbox','cat12','templates_volumes','mori.nii')                1      {'gm','wm'}         1; ... % only one subject, but with WM regions
   fullfile(spm('dir'),'toolbox','cat12','templates_volumes','anatomy.nii')             1      {'gm','wm'}         1; ... % ROIs requires further work >> use Anatomy toolbox
+  fullfile(spm('dir'),'toolbox','cat12','templates_volumes','julichbrain.nii')         1      {'gm'}              1; ... % 
   fullfile(spm('dir'),'toolbox','cat12','templates_volumes','Schaefer2018_100Parcels_17Networks_order.nii') 1 {'gm'} 1; ... % atlas based on rsfMRI data from 1489 subjects
   fullfile(spm('dir'),'toolbox','cat12','templates_volumes','Schaefer2018_200Parcels_17Networks_order.nii') 1 {'gm'} 1; ... % atlas based on rsfMRI data from 1489 subjects
   fullfile(spm('dir'),'toolbox','cat12','templates_volumes','Schaefer2018_400Parcels_17Networks_order.nii') 1 {'gm'} 1; ... % atlas based on rsfMRI data from 1489 subjects
