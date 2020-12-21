@@ -49,6 +49,43 @@ switch lower(action)
                 exit_code = 1;
             end
         end
+    case {'adjust_input_long'}
+        if nargin < 6
+            % where nifti 1 .. n are the niftis to be longitudinal
+            % processed
+            fprintf('Correct syntax is: adjust_input [input mat] [output mat] [input nifti 1] (...) [input nifti n] [spm dir which needs to be replaced] [short|long]\n');
+            exit_code = 1;
+        else
+            inFile = varargin{2};
+            outFile = varargin{3};
+            niftis = varargin{4:end-2};
+            oldspmdir = varargin{end-1};
+            mode = varargin{end};
+            
+            if isfile(inFile) && ~isfile(outFile)
+                job = load(inFile);
+                matlabbatch = job.matlabbatch;
+                matlabbatch = deepreplace(matlabbatch, oldspmdir, strcat(fullfile(spm('dir')), '/'));
+                for k=1:length(niftis)
+                        sub{k,1} = [niftis{k} ',1'];
+                end
+                % todo:
+                % do this in 
+                % * 2x extract add. surf params, 
+                % * 3x resample
+                % * all smoothing
+                % * add Rois surface stuff...
+                matlabbatch{1}.spm.tools.cat.long.datalong.subjects{1} = sub;
+                disp('Using the following paths in given batch with this spm installation')
+                deepstrdisp(matlabbatch, '/')
+                save(outFile, 'matlabbatch');
+                exit(0)
+            else
+                fprintf('Either [input mat] does not exist or [output mat] exists already\n')
+                exit_code = 1;
+                
+            end
+        end
     case {'','pet','fmri','eeg','quit'}
     %----------------------------------------------------------------------
         spm(varargin{:});
