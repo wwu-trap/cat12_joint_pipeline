@@ -58,7 +58,7 @@ switch lower(action)
         else
             inFile = varargin{2};
             outFile = varargin{3};
-            niftis = varargin{4:end-2};
+            niftis = {varargin{4:end-2}};
             oldspmdir = varargin{end-1};
             mode = varargin{end};
             
@@ -67,10 +67,10 @@ switch lower(action)
                 matlabbatch = job.matlabbatch;
                 matlabbatch = deepreplace(matlabbatch, oldspmdir, strcat(fullfile(spm('dir')), '/'));
                 % These should be relevlant file locations / prefixes                
-                LONGPREFIX = strcat(filesep,"mri",filesep,"mwmwp1r");
-                SHORTPREFIX = strcat(filesep,"mri",filesep,"mwp1r");
-                LHPREFIX =strcat(filesep,"surf",filesep,"lh.central.r");
-                %TCKPREFIX=strcat(filesep,"surf",filesep,"lh.thickness.r");
+                LONGPREFIX = strcat(filesep,'mri',filesep,'mwmwp1r');
+                SHORTPREFIX = strcat(filesep,'mri',filesep,'mwp1r');
+                LHPREFIX =strcat(filesep,'surf',filesep,'lh.central.r');
+                TCKPREFIX=strcat(filesep,'surf',filesep,'lh.thickness.r');
                 
                 switch lower(mode)
                     case {'long'}
@@ -86,7 +86,8 @@ switch lower(action)
                 for k=1:length(niftis)
                         sub{k,1} = [niftis{k} ',1'];
                         [subjectDir{k} subjectName{k} subjectExt{k}] = fileparts(niftis{k});
-                        lhcent{k,1} = [subjectDir{k} LHPREFIX subjectName ".gii"];
+                        lhcent{k,1} = strcat(subjectDir{k},LHPREFIX,subjectName{k},'.gii');
+                        lhthick{k,1} = strcat(subjectDir{k},TCKPREFIX,subjectName{k});
                 end
                 % todo:
                 % * add Rois surface stuff...
@@ -98,16 +99,15 @@ switch lower(action)
                 % (3-5) Resample & smooth 1-3; 6 can be omitted using
                 % dependency
                 %      only for the first three resample jobs thickness is used
-                for smoothy=3:5
-                        for k=1:length(subjectDir)
-                            matlabbatch{smoothy}.spm.tools.cat.stools.surfresamp.sample{k}= strcat(subjectDir{k},SURFPREFIX,subjectName{k});
-                        end
-                end
+               for smoothy=3:5
+                           matlabbatch{smoothy}.spm.tools.cat.stools.surfresamp.sample{1,1}.data_surf = lhthick; %strcat(subjectDir{k},SURFPREFIX,subjectName{k});                       
+               end
                 % smooth 7,8,9 
                 for smoothy=7:9
-                        for k=1:length(subjectDir)
-                            matlabbatch{smoothy}.spm.spatial.smooth.data{k} = strcat(subjectDir{k},outPrefix,subjectName{k},'.nii');
-                        end
+                      matlabbatch{smoothy}.spm.spatial.smooth.data = {};
+                      for k=1:length(subjectDir)
+                          matlabbatch{smoothy}.spm.spatial.smooth.data{k,1} = strcat(subjectDir{k},outPrefix,subjectName{k},'.nii,1');
+                      end
                 end
                 % won't do this now:
                 % (11-end) ROI extraction
