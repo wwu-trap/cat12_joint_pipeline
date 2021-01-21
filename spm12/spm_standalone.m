@@ -50,7 +50,7 @@ switch lower(action)
             end
         end
     case {'adjust_input_long'}
-        if nargin < 6
+        if nargin < 7
             % where nifti 1 .. n are the niftis to be longitudinal
             % processed
             fprintf('Correct syntax is: adjust_input [input mat] [output mat] [input nifti 1] (...) [input nifti n] [spm dir which needs to be replaced] [short|long]\n');
@@ -66,16 +66,55 @@ switch lower(action)
                 job = load(inFile);
                 matlabbatch = job.matlabbatch;
                 matlabbatch = deepreplace(matlabbatch, oldspmdir, strcat(fullfile(spm('dir')), '/'));
+                % These should be relevlant file locations / prefixes                
+                LONGPREFIX = strcat(filesep,"mri",filesep,"mwmwp1r");
+                SHORTPREFIX = strcat(filesep,"mri",filesep,"mwp1r");
+                LHPREFIX =strcat(filesep,"surf",filesep,"lh.central.r");
+                %TCKPREFIX=strcat(filesep,"surf",filesep,"lh.thickness.r");
+                
+                switch lower(mode)
+                    case {'long'}
+                        matlabbatch{1}.spm.tools.cat.long.longmodel = 1;
+                        outPrefix = LONGPREFIX;
+                    case {'short'}
+                        matlabbatch{1}.spm.tools.cat.long.longmodel = 0;
+                        outPrefix = SHORTPREFIX;
+                    otherwise 
+                        error('Wtf, dont know this option');
+                end
+                %
                 for k=1:length(niftis)
                         sub{k,1} = [niftis{k} ',1'];
+                        [subjectDir{k} subjectName{k} subjectExt{k}] = fileparts(niftis{k});
+                        lhcent{k,1} = [subjectDir{k} LHPREFIX subjectName ".gii"];
                 end
                 % todo:
-                % do this in 
-                % * 2x extract add. surf params, 
-                % * 3x resample
-                % * all smoothing
                 % * add Rois surface stuff...
+                
+                % (1) segment
                 matlabbatch{1}.spm.tools.cat.long.datalong.subjects{1} = sub;
+                % (2) extract. add surf
+                matlabbatch{2}.spm.tools.cat.stools.surfextract.data_surf = lhcent;
+                % (3-5) Resample & smooth 1-3; 6 can be omitted using
+                % dependency
+                %      only for the first three resample jobs thickness is used
+                for smoothy=3:5
+                        for k=1:length(subjectDir)
+                            matlabbatch{smoothy}.spm.tools.cat.stools.surfresamp.sample{k}= strcat(subjectDir{k},SURFPREFIX,subjectName{k});
+                        end
+                end
+                % smooth 7,8,9 
+                for smoothy=7:9
+                        for k=1:length(subjectDir)
+                            matlabbatch{smoothy}.spm.spatial.smooth.data{k} = strcat(subjectDir{k},outPrefix,subjectName{k},'.nii');
+                        end
+                end
+                % won't do this now:
+                % (11-end) ROI extraction
+                %for k=1:length(subjectDir)
+                %    matlabbatch{10+k}.spm.tools.cat.stools.surf2roi.cdata{1,2} = lhcent{k,1};
+                %end
+                    
                 disp('Using the following paths in given batch with this spm installation')
                 deepstrdisp(matlabbatch, '/')
                 save(outFile, 'matlabbatch');
