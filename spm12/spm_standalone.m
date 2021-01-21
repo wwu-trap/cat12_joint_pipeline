@@ -74,10 +74,10 @@ switch lower(action)
                 
                 switch lower(mode)
                     case {'long'}
-                        matlabbatch{1}.spm.tools.cat.long.longmodel = 1;
+                        matlabbatch{1}.spm.tools.cat.long.longmodel = 2;
                         outPrefix = LONGPREFIX;
                     case {'short'}
-                        matlabbatch{1}.spm.tools.cat.long.longmodel = 0;
+                        matlabbatch{1}.spm.tools.cat.long.longmodel = 1;
                         outPrefix = SHORTPREFIX;
                     otherwise 
                         error('Wtf, dont know this option');
