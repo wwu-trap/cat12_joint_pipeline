@@ -12,7 +12,7 @@
 1. Download spm12 build v7771: https://www.fil.ion.ucl.ac.uk/spm/download/restricted/eldorado/spm12.zip (can be different in the future)
 2. Download and extract cat12.7 (stable) build v1720: http://www.neuro.uni-jena.de/cat12/cat12_r1720.zip into the toolbox dir of spm12
 3. add the files from the **spm12** dir in this repo to the root dir of your local spm12 installation 
-4. add the files from the **cat12** dir in this repo to your local spm12/toolbox/cat12/ dir
+4. add the files from the **cat12** and the **cat_defaults.m** from **batch** dir in this repo to your local spm12/toolbox/cat12/ dir
 5. compile spm12
    1. start MATLAB (we use R2019a - v96)
    2. add spm12 dir to path
