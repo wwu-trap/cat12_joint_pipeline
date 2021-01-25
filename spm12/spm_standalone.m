@@ -96,14 +96,15 @@ switch lower(action)
                 matlabbatch{1}.spm.tools.cat.long.datalong.subjects{1} = sub;
                 % (2) extract. add surf
                 matlabbatch{2}.spm.tools.cat.stools.surfextract.data_surf = lhcent;
-                % (3-5) Resample & smooth 1-3; 6 can be omitted using
-                % dependency
+                % (3-5) Resample & smooth 1-3; 
                 %      only for the first three resample jobs thickness is used
                for smoothy=3:5
                            matlabbatch{smoothy}.spm.tools.cat.stools.surfresamp.sample{1,1}.data_surf = lhthick; %strcat(subjectDir{k},SURFPREFIX,subjectName{k});                       
                end
-                % smooth 7,8,9 
-                for smoothy=7:9
+                % 6-11 can be omitted by using dependencies
+                % ...
+                % smooth 12,13,14 
+                for smoothy=12:14
                       matlabbatch{smoothy}.spm.spatial.smooth.data = {};
                       for k=1:length(subjectDir)
                           matlabbatch{smoothy}.spm.spatial.smooth.data{k,1} = strcat(subjectDir{k},outPrefix,subjectName{k},'.nii,1');
