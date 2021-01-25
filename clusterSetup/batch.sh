@@ -17,6 +17,13 @@
 partsdir="/scratch/tmp/d_grot03/for2107_long/parts"
 partsfile=`ls -1 $partsdir | sed -n "${SLURM_ARRAY_TASK_ID}p"`
 
-for nifti in `cat $partsdir/$partsfile`; do 
-/home/d/d_grot03/cjp8-scripts/preprocess-nifti.sh $nifti & done
+
+OIFS="$IFS"
+IFS=$'\n'
+for niftis in `cat $partsdir/$partsfile`; do 
+	/home/d/d_grot03/cjp8-scripts/preprocess-nifti.sh $niftis & 
+	done
+IFS="$OIFS"
+
 wait
+
