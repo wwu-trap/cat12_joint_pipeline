@@ -14,7 +14,7 @@
 #SBATCH --mail-user=d_grot03@uni-muenster.de # your mail address
  
 # START THE APPLICATION
-partsdir="/scratch/tmp/d_grot03/for2107_long/parts"
+partsdir="/scratch/tmp/d_grot03/for2107_long/probanden_liste-parts/"
 partsfile=`ls -1 $partsdir | sed -n "${SLURM_ARRAY_TASK_ID}p"`
 
 
