@@ -26,7 +26,7 @@ exit_code = 0;
 switch lower(action)
     
     case {'adjust_input'}
-        if nargin ~= 5
+        if nargin < 5
             fprintf('Correct syntax is: adjust_input [input mat] [output mat] [input nifti] [spm dir which needs to be replaced]\n');
             exit_code = 1;
         else
@@ -80,7 +80,8 @@ switch lower(action)
                         matlabbatch{1}.spm.tools.cat.long.longmodel = 1;
                         outPrefix = SHORTPREFIX;
                     otherwise 
-                        error('Wtf, dont know this option');
+                        exit_code = 1;
+                        error('Unkown model option. Please use "short" for small intervalls, "long" for large intervals.');
                 end
                 %
                 for k=1:length(niftis)
@@ -99,12 +100,12 @@ switch lower(action)
                 % (3-5) Resample & smooth 1-3; 
                 %      only for the first three resample jobs thickness is used
                for smoothy=3:5
-                           matlabbatch{smoothy}.spm.tools.cat.stools.surfresamp.sample{1,1}.data_surf = lhthick; %strcat(subjectDir{k},SURFPREFIX,subjectName{k});                       
+                           matlabbatch{smoothy}.spm.tools.cat.stools.surfresamp.sample{1,1}.data_surf = lhthick;                        
                end
                 % 6-11 can be omitted by using dependencies
                 % ...
-                % smooth 12,13,14 
-                for smoothy=12:14
+                % smooth 12,13,14,15 (6mm/8mm/10mm/12mm)
+                for smoothy=12:15
                       matlabbatch{smoothy}.spm.spatial.smooth.data = {};
                       for k=1:length(subjectDir)
                           matlabbatch{smoothy}.spm.spatial.smooth.data{k,1} = strcat(subjectDir{k},outPrefix,subjectName{k},'.nii,1');
@@ -112,10 +113,6 @@ switch lower(action)
                 end
                 % won't do this now:
                 % (11-end) ROI extraction
-                %for k=1:length(subjectDir)
-                %    matlabbatch{10+k}.spm.tools.cat.stools.surf2roi.cdata{1,2} = lhcent{k,1};
-                %end
-                    
                 disp('Using the following paths in given batch with this spm installation')
                 deepstrdisp(matlabbatch, '/')
                 save(outFile, 'matlabbatch');
