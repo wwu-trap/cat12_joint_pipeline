@@ -26,7 +26,11 @@
 
 ## longitudinal data 
 
-### How to setup the cat12 pipeline longitudinal (current version: [tba]-spm12_v7771-cat12_r1742)
+### How to setup and compile the cat12 pipeline longitudinal (current version: [tba]-spm12_v7771-cat12_r1742) using make-script
+1. Please make sure you have installed MATLAB 2017b
+2. run `make_cjp9-long.sh [path to your MATLAB 2017b executable]`
+
+### How to use the cat12 pipeline longitudinal (current version: [tba]-spm12_v7771-cat12_r1742)
 Please note, that Matlab 2019 showed some issues with the longitudinal stream in compiled SPM. Matlab R2017b however works fine, so we use it.
 
 1. Setup MATLAB 2017 (v93)
