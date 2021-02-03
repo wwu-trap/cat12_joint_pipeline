@@ -22,7 +22,7 @@ wait
 # setup spm
 cp ../spm12/* spm12/ 
 cp ../batch/v1742/cat_defaults.m cat12/ 
-mv cat12 spm12 
+mv cat12 spm12/toolbox
 mv spm12 $pipeName
 cd ..
 
