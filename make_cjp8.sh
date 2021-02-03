@@ -1,7 +1,7 @@
 #!/bin/bash
 dSPM="https://www.fil.ion.ucl.ac.uk/spm/download/restricted/eldorado/spm12.zip"
 dCAT="http://www.neuro.uni-jena.de/cat12/cat12_r1720.zip"
-pipeName=cjp8
+pipeName=cjp_v0008-spm12_v7771-cat12_r1720
 
 if [ ! -x $1 ] | [ $# -lt 1 ]; then 
 	echo "please specify MATLABR2019a executable!"

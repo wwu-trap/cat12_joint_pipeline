@@ -30,7 +30,7 @@ cd ..
 $matlabBin -nodisplay -nodesktop -r "make_cjp9-long('$(readlink -e pipeline/$pipeName)')"
 
 mv pipeline/standalone "pipeline/standalone_"${pipeName}
-cp "batch/v1742/*.mat" "batch/v1742/*.txt" "pipeline/standalone_"${pipeName}
+cp batch/v1742/*.mat batch/v1742/*.txt "pipeline/standalone_"${pipeName}
 
 echo "Done. Have fun!"
 
