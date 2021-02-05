@@ -1,10 +1,12 @@
 #!/bin/bash
 
 workdir=./probanden_liste-parts/
+splitter=4
 
 mkdir -p $workdir
-rm $workdir/*
+rm $workdir/* 2> /dev/null
 
-realpath ./data/* > probanden_liste.txt
+realpath ./subjects/*.nii > probanden_liste.txt
+realpath ./subjects/*.img >> probanden_liste.txt
 cd $workdir
-split --lines=2 ../probanden_liste.txt
+split --lines=$splitter ../probanden_liste.txt
