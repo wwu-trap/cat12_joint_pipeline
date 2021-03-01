@@ -27,7 +27,7 @@ mv spm12 $pipeName
 cd ..
 
 # compile it
-$matlabBin -nodisplay -nodesktop -r "make_cjp9-long('$(readlink -e pipeline/$pipeName)')"
+$matlabBin -nodisplay -nodesktop -r "make_cjp9_long('$(readlink -e pipeline/$pipeName)')"
 
 mv pipeline/standalone "pipeline/standalone_"${pipeName}
 cp batch/v1742/*.mat batch/v1742/*.txt "pipeline/standalone_"${pipeName}
