@@ -106,6 +106,7 @@ switch lower(action)
                 % ...
                 % smooth 12,13,14,15 (6mm/8mm/10mm/12mm)
                 for smoothy=12:15
+			matlabbatch{smoothy}.spm.spatial.smooth.data = {};
                       for k=1:length(subjectDir)
                           matlabbatch{smoothy}.spm.spatial.smooth.data{k,1} = strcat(subjectDir{k},outPrefix,subjectName{k},'.nii,1');
                       end
@@ -113,7 +114,7 @@ switch lower(action)
                 % Extract Surfaces Rois
                 % 16 can be done via dependency
                 % 17 is thickness form seg
-                matlabbatch{17}.spm.tools.cat.stools.surf2roi.cdata = lhthick; 
+                matlabbatch{17}.spm.tools.cat.stools.surf2roi.cdata{1} = lhthick; 
                 disp('Using the following paths in given batch with this spm installation')
                 deepstrdisp(matlabbatch, '/')
                 save(outFile, 'matlabbatch');
