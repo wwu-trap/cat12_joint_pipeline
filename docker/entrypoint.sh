@@ -43,12 +43,16 @@ function cleanup_and_exit () {
 
     if [[ "$1" -eq 0 ]]; then
         if [ -z "$KEEP_BATCH_FILE_ON_FINISH" ]; then
+            einfo "Removing tmp file $BATCH_FILE"
             rm -rf "$BATCH_FILE"
         fi
+        einfo "Removing tmp file $PATH_TO_T1_NIFTI (this is a copy of your input nifti and can therefor be deleted)."
         rm -rf "$PATH_TO_T1_NIFTI"
     elif [ -n "$DELETE_OUTPUT_ON_ERROR" ] && [[ "$1" -gt 0 ]] && [ -n "$OUT_DIR" ]; then
         einfo "Deleting ${OUT_DIR} because of set var DELETE_OUTPUT_ON_ERROR"
         rm -rf "${OUT_DIR}"
+    else
+        einfo "Nothing to cleanup"
     fi
     exit "$1"
 }
