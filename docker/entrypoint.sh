@@ -30,7 +30,6 @@ function einfo ()       { verb_lvl=$inf_lvl elog "INFO ---- $*" ;}
 function edebug ()      { verb_lvl=$dbg_lvl elog "${colgrn}DEBUG${colrst} --- $*" ;}
 function eerror ()      { verb_lvl=$err_lvl elog "${colred}ERROR${colrst} --- $*" ;}
 function ecrit ()       { verb_lvl=$crt_lvl elog "${colpur}FATAL${colrst} --- $*" ;}
-function edumpvar ()    { for var in $@ ; do edebug "$var=${!var}" ; done }
 function elog() {
     if [ "$verbosity" -ge "$verb_lvl" ]; then
         datestring=$(date +"%Y-%m-%d %H:%M:%S")
@@ -44,7 +43,6 @@ function elog() {
 # Checks:
 # 2: /in mounted ro?
 # 3: /out mounted and writable
-# 4: $1 is .nii{,.gz} file? (gunzip when .nii.gz after copying)
 # 5 if slurm then tmp dir in out otherwise UUID
 
 
@@ -58,11 +56,25 @@ BATCH_TEMPLATE_REPLACE_PATH="/spm-data/Scratch/spielwiese_kelvin/cat12_joint_pip
 
 enotify "### Step 1: Prepare ###"
 
+# Check mounts and arguements
 if [[ ! $(grep -c "<version>9.6" /opt/mcr/v96/VersionInfo.xml 2> /dev/null) -gt 0 ]]; then
     eerror "Wrong MCR Version - Please download, install and mount MATLAB MCR v96 to /opt/mcr/v96/"
     exit 11
 else
     edebug "Found MATLAB MCR v96"
+fi
+
+if [ -z "$1" ]; then
+    eerror "Missing argument: please provide path to T1w image file!"
+    exit 12
+fi
+if [ ! -f "$1" ]; then
+    eerror "Error in argument: path to T1w image file does not exist!"
+    exit 13
+fi
+if [[ "$1" != *".nii" ]] && [[ "$1" != *".nii.gz" ]] || [[ "$1" != "/in/"* ]]; then
+    eerror "Error in argument: T1w image file must be a .nii or .nii.gz file and in /in/ dir!"
+    exit 14
 fi
 
 nifti=$(realpath "$1")
