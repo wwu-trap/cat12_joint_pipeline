@@ -31,7 +31,7 @@ function edebug ()      { verb_lvl=$dbg_lvl elog "${colgrn}DEBUG${colrst} --- $*
 function eerror ()      { verb_lvl=$err_lvl elog "${colred}ERROR${colrst} --- $*" ;}
 function ecrit ()       { verb_lvl=$crt_lvl elog "${colpur}FATAL${colrst} --- $*" ;}
 function elog() {
-    if [ "$verbosity" -ge "$verb_lvl" ]; then
+    if [ "$verbosity" -ge "${verb_lvl:-0}" ]; then
         datestring=$(date +"%Y-%m-%d %H:%M:%S")
         echo -e "$datestring - $*"
     fi
@@ -86,39 +86,29 @@ if ! cd "$WORKING_DIR"; then
 fi
 
 # Copy input und gunzip if needed
-
-
-# TODO:
-# Copy to output/workdir
-# gunzip when .nii.gz
-
-# PATH_TO_T1_NIFTI=$(realpath "$1")
-
-
-exit 0
-
+if [[ "$1" == *".nii" ]]; then
+    cp "$1" "$PATH_TO_T1_NIFTI"
+elif [[ "$1" == *".nii.gz" ]]; then
+    einfo "Gunzip .nii.gz"
+    gunzip -c "$1" > "$PATH_TO_T1_NIFTI"
+else
+    eerror "Input NIfTI must be .nii or .nii.gz!"
+    exit 17
+fi
 
 
 echo "--- Step 2: Preprocess ---"
+
 #Create SPM12 batch 
+einfo "Adjusting CJP8 Batch Template"
 batchfilename=$WORKING_DIR/${PATIENT_ID}-cjp8_batch.mat
 $SPMDIR/spm12 adjust_input "$BATCH_TEMPLATE_PATH" "$batchfilename" "$PATH_TO_T1_NIFTI" "$BATCH_TEMPLATE_REPLACE_PATH"
 
 #Execute SPM12 batch
+einfo "Starting CJP8 Preprocessing Pipeline"
 $SPMDIR/spm12 batch "$batchfilename"
 
 
 echo "--- Step 3: Check ---"
 
 echo "--- Step 4: Cleanup ---"
-
-
-[ -z "$1" ] && exit 1
-
-cp "$1" /out 
-NIIFILE=/out/$(basename "$1")
-
-cd /out/ || exit 1
-/scripts/preprocess-nifti.sh "$NIIFILE"
-
-
