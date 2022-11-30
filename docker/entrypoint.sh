@@ -124,7 +124,82 @@ fi
 
 
 enotify "### Step 3: Check ###"
+needed_files="/label/catROI_PATIENTID.mat
+/label/catROI_PATIENTID.xml
+/label/catROIs_PATIENTID.mat
+/label/catROIs_PATIENTID.xml
+/mri/iy_PATIENTID.nii
+/mri/mwp1PATIENTID.nii
+/mri/mwp2PATIENTID.nii
+/mri/p0PATIENTID.nii
+/mri/rp1PATIENTID_rigid.nii
+/mri/rp2PATIENTID_rigid.nii
+/mri/s10mwp1PATIENTID.nii
+/mri/s12mwp1PATIENTID.nii
+/mri/s8mwp1PATIENTID.nii
+/mri/wj_PATIENTID.nii
+/mri/wmPATIENTID.nii
+/mri/wmiPATIENTID.nii
+/mri/y_PATIENTID.nii
+/report/cat_PATIENTID.mat
+/report/cat_PATIENTID.xml
+/report/catlog_PATIENTID.txt
+/report/catreport_PATIENTID.pdf
+/report/catreportj_PATIENTID.jpg
+/surf/lh.central.PATIENTID.gii
+/surf/lh.depth.PATIENTID
+/surf/lh.fractaldimension.PATIENTID
+/surf/lh.gyrification.PATIENTID
+/surf/lh.pbt.PATIENTID
+/surf/lh.sphere.PATIENTID.gii
+/surf/lh.sphere.reg.PATIENTID.gii
+/surf/lh.thickness.PATIENTID
+/surf/rh.central.PATIENTID.gii
+/surf/rh.depth.PATIENTID
+/surf/rh.fractaldimension.PATIENTID
+/surf/rh.gyrification.PATIENTID
+/surf/rh.pbt.PATIENTID
+/surf/rh.pial.PATIENTID.gii
+/surf/rh.sphere.PATIENTID.gii
+/surf/rh.sphere.reg.PATIENTID.gii
+/surf/rh.thickness.PATIENTID
+/surf/rh.white.PATIENTID.gii
+/surf/s12.mesh.thickness.resampled_32k.PATIENTID.dat
+/surf/s12.mesh.thickness.resampled_32k.PATIENTID.gii
+/surf/s15.mesh.thickness.resampled_32k.PATIENTID.dat
+/surf/s15.mesh.thickness.resampled_32k.PATIENTID.gii
+/surf/s20.mesh.depth.resampled_32k.PATIENTID.dat
+/surf/s20.mesh.depth.resampled_32k.PATIENTID.gii
+/surf/s20.mesh.fractaldimension.resampled_32k.PATIENTID.dat
+/surf/s20.mesh.fractaldimension.resampled_32k.PATIENTID.gii
+/surf/s20.mesh.gyrification.resampled_32k.PATIENTID.dat
+/surf/s20.mesh.gyrification.resampled_32k.PATIENTID.gii
+/surf/s20.mesh.thickness.resampled_32k.PATIENTID.dat
+/surf/s20.mesh.thickness.resampled_32k.PATIENTID.gii
+/surf/s25.mesh.depth.resampled_32k.PATIENTID.dat
+/surf/s25.mesh.depth.resampled_32k.PATIENTID.gii
+/surf/s25.mesh.fractaldimension.resampled_32k.PATIENTID.dat
+/surf/s25.mesh.fractaldimension.resampled_32k.PATIENTID.gii
+/surf/s25.mesh.gyrification.resampled_32k.PATIENTID.dat
+/surf/s25.mesh.gyrification.resampled_32k.PATIENTID.gii
+"
 
+files=0
+for generic_file in $needed_files; do
+    idFile="$OUT_DIR${generic_file//PATIENTID/$PATIENT_ID}"
+    if [ -f "$idFile" ]; then
+        files=$((files + 1));
+    else 
+        ewarn "Missing file $idFile"
+    fi
+done
+maxfiles=$(echo "$needed_files" | wc -l)
+missingfiles=$((maxfiles - files))
+einfo "Successfully checked $files/$maxfiles files."
+if [[ "$missingfiles" -gt 0 ]]; then
+    eerror "Missing $missingfiles in output dir!"
+    cleanup_and_exit 19
+fi
 
-
+einfo "Successfully processed and checked T1 image with CJP8 preprocessing pipeline!"
 cleanup_and_exit 0
