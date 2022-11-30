@@ -38,27 +38,43 @@ function elog() {
 }
 
 
+function cleanup_and_exit () {
+    enotify "### Cleanup ###"
+
+    if [[ "$1" -eq 0 ]]; then
+        if [ -z "$KEEP_BATCH_FILE_ON_FINISH" ]; then
+            rm -rf "$BATCH_FILE"
+        fi
+        rm -rf "$PATH_TO_T1_NIFTI"
+    elif [ -n "$DELETE_OUTPUT_ON_ERROR" ] && [[ "$1" -gt 0 ]] && [ -n "$OUT_DIR" ]; then
+        einfo "Deleting ${OUT_DIR} because of set var DELETE_OUTPUT_ON_ERROR"
+        rm -rf "${OUT_DIR}"
+    fi
+    exit "$1"
+}
+
+
 enotify "### Step 1: Prepare ###"
 
 # Check mounts and arguements
 if [[ ! $(grep -c "<version>9.6" /opt/mcr/v96/VersionInfo.xml 2> /dev/null) -gt 0 ]]; then
     eerror "Wrong MCR Version - Please download, install and mount MATLAB MCR v96 to /opt/mcr/v96/"
-    exit 11
+    cleanup_and_exit 11
 else
     edebug "Found MATLAB MCR v96"
 fi
 
 if [ -z "$1" ]; then
     eerror "Missing argument: please provide path to T1w image file!"
-    exit 12
+    cleanup_and_exit 12
 fi
 if [ ! -f "$1" ]; then
     eerror "Error in argument: path to T1w image file does not exist!"
-    exit 13
+    cleanup_and_exit 13
 fi
 if [[ "$1" != *".nii" ]] && [[ "$1" != *".nii.gz" ]] || [[ "$1" != "/in/"* ]]; then
     eerror "Error in argument: T1w image file must be a .nii or .nii.gz file and in /in/ dir!"
-    exit 14
+    cleanup_and_exit 14
 fi
 
 # Set variables
@@ -76,7 +92,7 @@ einfo "Output directory: $OUT_DIR"
 # Create directory in /out/
 if ! mkdir "$OUT_DIR"; then
     eerror "Could not write to /out/ and create output directory! Please check of /out/ is mounted correctly."
-    exit 15
+    cleanup_and_exit 15
 fi
 
 # Copy input und gunzip if needed
@@ -87,22 +103,28 @@ elif [[ "$1" == *".nii.gz" ]]; then
     gunzip -c "$1" > "$PATH_TO_T1_NIFTI"
 else
     eerror "Input NIfTI must be .nii or .nii.gz!"
-    exit 16
+    cleanup_and_exit 16
 fi
 
 
-echo "--- Step 2: Preprocess ---"
+enotify "### Step 2: Preprocess ###"
 
 #Create SPM12 batch 
 einfo "Adjusting CJP8 Batch Template"
-batchfilename="$OUT_DIR/${PATIENT_ID}-cjp8_batch.mat"
-$SPMDIR/spm12 adjust_input "$BATCH_TEMPLATE_PATH" "$batchfilename" "$PATH_TO_T1_NIFTI" "$BATCH_TEMPLATE_REPLACE_PATH"
+BATCH_FILE="$OUT_DIR/${PATIENT_ID}-cjp8_batch.mat"
+if ! $SPMDIR/spm12 adjust_input "$BATCH_TEMPLATE_PATH" "$BATCH_FILE" "$PATH_TO_T1_NIFTI" "$BATCH_TEMPLATE_REPLACE_PATH"; then
+    cleanup_and_exit 17
+fi
 
 #Execute SPM12 batch
 einfo "Starting CJP8 Preprocessing Pipeline"
-$SPMDIR/spm12 batch "$batchfilename"
+if ! $SPMDIR/spm12 batch "$BATCH_FILE"; then 
+    cleanup_and_exit 18
+fi
 
 
-echo "--- Step 3: Check ---"
+enotify "### Step 3: Check ###"
 
-echo "--- Step 4: Cleanup ---"
+
+
+cleanup_and_exit 0
