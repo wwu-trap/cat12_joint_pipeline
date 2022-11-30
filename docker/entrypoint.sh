@@ -168,6 +168,12 @@ fi
 PATH_TO_T1_NIFTI="${OUT_DIR}/$(basename "$1" | sed -E 's/\.gz$//g')"
 einfo "Output directory: $OUT_DIR"
 
+if [ -d "$OUT_DIR" ]; then
+    ewarn "$OUT_DIR already exists! Not preprocessing but checking if all files are present"
+    qualitycheck
+    cleanup_and_exit 101
+fi
+
 # Create directory in /out/
 if ! mkdir "$OUT_DIR"; then
     eerror "Could not write to /out/ and create output directory! Please check of /out/ is mounted correctly."
