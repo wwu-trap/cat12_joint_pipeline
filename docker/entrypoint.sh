@@ -76,7 +76,7 @@ einfo "Output directory: $OUT_DIR"
 
 # Create directories in /out/
 if ! mkdir "$OUT_DIR"; then
-    eerror "Could not create write to /out/ and create output directory!"
+    eerror "Could not write to /out/ and create output directory! Please check of /out/ is mounted correctly."
     exit 15
 fi
 mkdir "$WORKING_DIR"
