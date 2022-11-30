@@ -38,22 +38,6 @@ function elog() {
 }
 
 
-
-
-# Checks:
-# 2: /in mounted ro?
-# 3: /out mounted and writable
-# 5 if slurm then tmp dir in out otherwise UUID
-
-
-# Edit the following variables to your needs:
-SPMDIR="/opt/cjp_v0008-spm12_v7771-cat12_r1720/"
-BATCH_TEMPLATE="/opt/cjp8-batch-template.mat"
-
-# BATCH_TEMPLATE_REPLACE_PATH does not need to be changed as long as you use cjp8
-BATCH_TEMPLATE_REPLACE_PATH="/spm-data/Scratch/spielwiese_kelvin/cat12_joint_pipeline/cjp_v0008-spm12_v7771-cat12_r1720-modifiedcatdefaults/"
-
-
 enotify "### Step 1: Prepare ###"
 
 # Check mounts and arguements
@@ -77,19 +61,48 @@ if [[ "$1" != *".nii" ]] && [[ "$1" != *".nii.gz" ]] || [[ "$1" != "/in/"* ]]; t
     exit 14
 fi
 
-nifti=$(realpath "$1")
-id=$(basename "$nifti" | sed 's|.nii||g')
-timestamp=$(date +'%Y-%m-%d_%H-%M-%S')
-workingdir="./workingdir/${id}_$timestamp"
-mkdir -p "$workingdir"
-workingdir=$(realpath "$workingdir")
-cd "$workingdir" || exit 1
+# Set variables
+SPMDIR="/opt/cjp_v0008-spm12_v7771-cat12_r1720/"
+BATCH_TEMPLATE_REPLACE_PATH="/spm-data/Scratch/spielwiese_kelvin/cat12_joint_pipeline/cjp_v0008-spm12_v7771-cat12_r1720-modifiedcatdefaults/"
+PATIENT_ID=$(basename "$1" | sed -E 's/\.nii(\.gz)?$//g')
+if [ -n "$SLURM_JOB_NAME" ] && [ -n "$SLURM_JOB_ID" ]; then
+    OUT_DIR="/out/${SLURM_JOB_NAME}-${SLURM_JOB_ID}_${PATIENT_ID}"
+else 
+    OUT_DIR="/out/$(uuidgen)_${PATIENT_ID}"
+fi
+PATH_TO_T1_NIFTI="${OUT_DIR}/$(basename "$1" | sed -E 's/\.gz$//g')"
+WORKING_DIR="${OUT_DIR}/workingdir/"
+einfo "Output directory: $OUT_DIR"
+
+# Create directories in /out/
+if ! mkdir "$OUT_DIR"; then
+    eerror "Could not create write to /out/ and create output directory!"
+    exit 15
+fi
+mkdir "$WORKING_DIR"
+if ! cd "$WORKING_DIR"; then
+    eerror "Cannot cd to $WORKING_DIR - please check permissions!"
+    exit 16
+fi
+
+# Copy input und gunzip if needed
+
+
+# TODO:
+# Copy to output/workdir
+# gunzip when .nii.gz
+
+# PATH_TO_T1_NIFTI=$(realpath "$1")
+
+
+exit 0
+
 
 
 echo "--- Step 2: Preprocess ---"
 #Create SPM12 batch 
-batchfilename=$workingdir/${id}-cjp8_batch.mat
-$SPMDIR/spm12 adjust_input "$BATCH_TEMPLATE" "$batchfilename" "$nifti" "$BATCH_TEMPLATE_REPLACE_PATH"
+batchfilename=$WORKING_DIR/${PATIENT_ID}-cjp8_batch.mat
+$SPMDIR/spm12 adjust_input "$BATCH_TEMPLATE_PATH" "$batchfilename" "$PATH_TO_T1_NIFTI" "$BATCH_TEMPLATE_REPLACE_PATH"
 
 #Execute SPM12 batch
 $SPMDIR/spm12 batch "$batchfilename"

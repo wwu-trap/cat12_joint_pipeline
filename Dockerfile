@@ -67,14 +67,15 @@ ENV CJP_REVISION cjp_v0008-spm12_v7771-cat12_r1720
 ENV LD_LIBRARY_PATH /opt/mcr/${MCR_VERSION}/runtime/glnxa64:/opt/mcr/${MCR_VERSION}/bin/glnxa64:/opt/mcr/${MCR_VERSION}/sys/os/glnxa64:/opt/mcr/${MCR_VERSION}/sys/opengl/lib/glnxa64:/opt/mcr/${MCR_VERSION}/extern/bin/glnxa64
 ENV MCR_INHIBIT_CTF_LOCK 1
 ENV SPM_HTML_BROWSER 0
+ENV BATCH_TEMPLATE_PATH /opt/cjp8-batch-template.mat
+
 
 COPY --from=intermediate /opt/${CJP_REVISION}.tar.gz /opt/${CJP_REVISION}.tar.gz
 RUN cd /opt/ && tar xf /opt/${CJP_REVISION}.tar.gz && rm -f /opt/${CJP_REVISION}.tar.gz
 
 RUN mkdir /scripts/
-COPY ./batch/cat12_complete_joint_pipeline.mat /scripts/
-COPY ./scripts/* /scripts/
-COPY ./docker/entrypoint.sh /scripts/
+COPY ./batch/cat12_complete_joint_pipeline.mat ${BATCH_TEMPLATE_PATH}
+COPY ./docker/* /scripts/
 RUN chmod +r -R /scripts/ && chmod +x /scripts/*.sh
 
 # Configure entry point
