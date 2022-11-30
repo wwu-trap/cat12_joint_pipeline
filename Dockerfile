@@ -59,19 +59,20 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -y install \
      /var/lib/apt/lists/* \
      /var/log/apt/term*
 
+ENV CJP_REVISION cjp_v0008-spm12_v7771-cat12_r1720
+
+COPY --from=intermediate /opt/${CJP_REVISION}.tar.gz /opt/${CJP_REVISION}.tar.gz
+RUN cd /opt/ && tar xf /opt/${CJP_REVISION}.tar.gz && rm -f /opt/${CJP_REVISION}.tar.gz
+
 ENV MATLAB_VERSION R2019a
 ENV MCR_VERSION v96
 ENV MCR_UPDATE 9
 ENV SPM_VERSION 12
-ENV CJP_REVISION cjp_v0008-spm12_v7771-cat12_r1720
 ENV LD_LIBRARY_PATH /opt/mcr/${MCR_VERSION}/runtime/glnxa64:/opt/mcr/${MCR_VERSION}/bin/glnxa64:/opt/mcr/${MCR_VERSION}/sys/os/glnxa64:/opt/mcr/${MCR_VERSION}/sys/opengl/lib/glnxa64:/opt/mcr/${MCR_VERSION}/extern/bin/glnxa64
 ENV MCR_INHIBIT_CTF_LOCK 1
 ENV SPM_HTML_BROWSER 0
 ENV BATCH_TEMPLATE_PATH /opt/cjp8-batch-template.mat
 
-
-COPY --from=intermediate /opt/${CJP_REVISION}.tar.gz /opt/${CJP_REVISION}.tar.gz
-RUN cd /opt/ && tar xf /opt/${CJP_REVISION}.tar.gz && rm -f /opt/${CJP_REVISION}.tar.gz
 
 RUN mkdir /scripts/
 COPY ./batch/cat12_complete_joint_pipeline.mat ${BATCH_TEMPLATE_PATH}
