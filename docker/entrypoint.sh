@@ -71,18 +71,12 @@ else
     OUT_DIR="/out/$(uuidgen)_${PATIENT_ID}"
 fi
 PATH_TO_T1_NIFTI="${OUT_DIR}/$(basename "$1" | sed -E 's/\.gz$//g')"
-WORKING_DIR="${OUT_DIR}/workingdir/"
 einfo "Output directory: $OUT_DIR"
 
-# Create directories in /out/
+# Create directory in /out/
 if ! mkdir "$OUT_DIR"; then
     eerror "Could not write to /out/ and create output directory! Please check of /out/ is mounted correctly."
     exit 15
-fi
-mkdir "$WORKING_DIR"
-if ! cd "$WORKING_DIR"; then
-    eerror "Cannot cd to $WORKING_DIR - please check permissions!"
-    exit 16
 fi
 
 # Copy input und gunzip if needed
@@ -93,7 +87,7 @@ elif [[ "$1" == *".nii.gz" ]]; then
     gunzip -c "$1" > "$PATH_TO_T1_NIFTI"
 else
     eerror "Input NIfTI must be .nii or .nii.gz!"
-    exit 17
+    exit 16
 fi
 
 
@@ -101,7 +95,7 @@ echo "--- Step 2: Preprocess ---"
 
 #Create SPM12 batch 
 einfo "Adjusting CJP8 Batch Template"
-batchfilename=$WORKING_DIR/${PATIENT_ID}-cjp8_batch.mat
+batchfilename="$OUT_DIR/${PATIENT_ID}-cjp8_batch.mat"
 $SPMDIR/spm12 adjust_input "$BATCH_TEMPLATE_PATH" "$batchfilename" "$PATH_TO_T1_NIFTI" "$BATCH_TEMPLATE_REPLACE_PATH"
 
 #Execute SPM12 batch
