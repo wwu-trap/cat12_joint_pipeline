@@ -51,7 +51,7 @@ LABEL org.opencontainers.image.authors="University of Muenster, Institute for Tr
 LABEL org.opencontainers.image.source="https://github.com/wwu-trap/cat12_joint_pipeline"
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -y install \
-     unzip xorg wget \
+     unzip xorg wget uuid-runtime \
  && apt-get clean \
  && rm -rf \
      /tmp/hsperfdata* \
