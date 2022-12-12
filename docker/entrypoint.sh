@@ -213,5 +213,14 @@ fi
 
 qualitycheck
 
+FINAL_OUT_DIR="/out/${PATIENT_ID}"
+if [ -d "$FINAL_OUT_DIR" ]; then
+    eerror "Final output dir $FINAL_OUT_DIR already exists!"
+    unset DELETE_OUTPUT_ON_ERROR
+    cleanup_and_exit 20
+else 
+    mv "$OUT_DIR" "$FINAL_OUT_DIR"
+fi
+
 einfo "Successfully processed and checked T1 image with CJP8 preprocessing pipeline!"
 cleanup_and_exit 0
