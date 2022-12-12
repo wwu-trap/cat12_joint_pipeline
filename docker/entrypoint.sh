@@ -48,6 +48,15 @@ function cleanup_and_exit () {
         fi
         einfo "Removing tmp file $PATH_TO_T1_NIFTI (this is a copy of your input nifti and can therefor be deleted)."
         rm -rf "$PATH_TO_T1_NIFTI"
+
+        # Move output dir when pipeline succeeded
+        FINAL_OUT_DIR="/out/${PATIENT_ID}"
+        if [ -d "$FINAL_OUT_DIR" ]; then
+            eerror "Final output dir ${FINAL_OUT_DIR} already exists, keeping ${OUT_DIR}!"
+            exit 20
+        else 
+            mv "$OUT_DIR" "$FINAL_OUT_DIR"
+        fi
     elif [ -n "$DELETE_OUTPUT_ON_ERROR" ] && [[ "$1" -gt 0 ]] && [ -n "$OUT_DIR" ]; then
         einfo "Deleting ${OUT_DIR} because of set var DELETE_OUTPUT_ON_ERROR"
         rm -rf "${OUT_DIR}"
@@ -212,15 +221,6 @@ if ! $SPMDIR/spm12 batch "$BATCH_FILE"; then
 fi
 
 qualitycheck
-
-FINAL_OUT_DIR="/out/${PATIENT_ID}"
-if [ -d "$FINAL_OUT_DIR" ]; then
-    eerror "Final output dir $FINAL_OUT_DIR already exists!"
-    unset DELETE_OUTPUT_ON_ERROR
-    cleanup_and_exit 20
-else 
-    mv "$OUT_DIR" "$FINAL_OUT_DIR"
-fi
 
 einfo "Successfully processed and checked T1 image with CJP8 preprocessing pipeline!"
 cleanup_and_exit 0
