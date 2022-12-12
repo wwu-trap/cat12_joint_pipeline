@@ -1,3 +1,5 @@
+### Current SPM dir which needs to be replaced (adjust_input):
+`/spm-data/Scratch/spielwiese_kelvin/cat12_joint_pipeline/cjp_v0008-spm12_v7771-cat12_r1720-modifiedcatdefaults/`
 
 ### How to setup the batch file
 1. Setup your spm12/cat12 installation as describer in this repostory
