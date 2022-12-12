@@ -161,7 +161,7 @@ if [[ "$1" != *".nii" ]] && [[ "$1" != *".nii.gz" ]] || [[ "$1" != "/in/"* ]]; t
 fi
 
 # Set variables
-SPMDIR="/opt/cjp_v0008-spm12_v7771-cat12_r1720/"
+SPMDIR="/opt/cjp_v0008-spm12_v7771-cat12_r1720"
 BATCH_TEMPLATE_REPLACE_PATH="/spm-data/Scratch/spielwiese_kelvin/cat12_joint_pipeline/cjp_v0008-spm12_v7771-cat12_r1720-modifiedcatdefaults/"
 PATIENT_ID=$(basename "$1" | sed -E 's/\.nii(\.gz)?$//g')
 if [ -n "$SLURM_JOB_NAME" ] && [ -n "$SLURM_JOB_ID" ]; then
