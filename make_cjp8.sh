@@ -30,7 +30,7 @@ cd ..
 $matlabBin -nodisplay -nodesktop -r "make_cjp8('$(readlink -e pipeline/$pipeName)')"
 
 mv pipeline/standalone "pipeline/standalone_"${pipeName}
-cp batch/v1720/*.mat batch/v1720/*.txt "pipeline/standalone_"${pipeName}
+cp batch/crosssectional-v1720/*.mat batch/crosssectional-v1720/*.txt "pipeline/standalone_"${pipeName}
 
 echo "Done. Please remember to setup jobs using the cat_defaults.m (see batch/v1720/)"
 

@@ -11,9 +11,9 @@
 4. create a specific batch file, derived from the batch template:<br />
    `<path_to_compiled_spm>/run_spm12.sh <path_to_mcr> adjust_input <path_to_batch_template> <path_to_new_batch> <path_to_nifti> <path_which_needs_to_be_replaced>`
    - `<path_to_mcr>`: MATLAB Runtime for version information see below
-   - `<path_to_batch_template>`: batch template (./batch/cat12_complete_joint_pipeline.mat) 
+   - `<path_to_batch_template>`: batch template (./batch/crosssectional-v1720/cat12_complete_joint_pipeline.mat) 
    - `<path_to_new_batch>`: this file must not exist
-   - `<path_which_needs_to_be_replaced>`: see README.md in ./batch/ directory
+   - `<path_which_needs_to_be_replaced>`: see README.md in ./batch/crosssectional-v1720/ directory
 5. execute the SPM12 batch:<br />
    `<path_to_compiled_spm>/run_spm12.sh <path_to_mcr> batch <path_to_new_batch>`
 
@@ -21,7 +21,7 @@
 1. download spm12 build v7771: https://www.fil.ion.ucl.ac.uk/spm/download/restricted/eldorado/spm12.zip (can be different in the future)
 2. download and extract cat12.7 (stable) build v1720: http://www.neuro.uni-jena.de/cat12/cat12_r1720.zip into the toolbox dir of spm12
 3. add the files from the **spm12** dir in this repo to the root dir of your local spm12 installation 
-4. add the files from the **cat12** and the **cat_defaults.m** from **batch/v1720** dir in this repo to your local spm12/toolbox/cat12/ dir
+4. add the files from the **cat12** and the **cat_defaults.m** from **batch/crosssectional-v1720** dir in this repo to your local spm12/toolbox/cat12/ dir
 5. compile spm12
    1. start MATLAB (we use R2019a - v96)
    2. add spm12 dir to path
@@ -50,7 +50,7 @@ Please note, that Matlab 2019 showed some issues with the longitudinal stream in
 1. Download spm12 build v7771: https://www.fil.ion.ucl.ac.uk/spm/download/restricted/eldorado/spm12.zip (can be different in the future)
 2. Download and extract cat12.7 (stable) build v1720: http://www.neuro.uni-jena.de/cat12/cat12_r1720.zip into the toolbox dir of spm12
 3. add the files from the **spm12** dir in this repo to the root dir of your local spm12 installation
-4. add the files from the **cat_defaults.m** from **batch/v1742** dir in this repo to your local spm12/toolbox/cat12/ dir
+4. add the files from the **cat_defaults.m** from **batch/longitudinal-v1742/** dir in this repo to your local spm12/toolbox/cat12/ dir
 5. compile spm12
    1. start MATLAB (we use R2017b - v93)
    2. add spm12 dir to path (no need to add cat12)
@@ -68,12 +68,12 @@ Please note, that Matlab 2019 showed some issues with the longitudinal stream in
 3. Do longitudinal preprocessing:
 
     #Create SPM12 batch - large changes, long time
-    [pathToCompiledSPM]/run_spm12.sh [pathToMCRv93] adjust_input_long [pathTo files of cat12_joint_pipeline/batch/v1742/cat12_complete_joint_pipeline_longitudinal.mat] \ 
+    [pathToCompiledSPM]/run_spm12.sh [pathToMCRv93] adjust_input_long [pathTo files of cat12_joint_pipeline/batch/longitudinal-v1742/cat12_complete_joint_pipeline_longitudinal.mat] \ 
     	[nameForBatchfileToGenerate] [mprage_T1.nii] ... [mprage_Tn.nii] [spm dir to replace in job] long
     
     # ... or
     #Create SPM12 batch - small changes, short time
-    [pathToCompiledSPM]/run_spm12.sh [pathToMCRv93] adjust_input_long [pathTo files of cat12_joint_pipeline/batch/v1742/cat12_complete_joint_pipeline_longitudinal.mat] \    
+    [pathToCompiledSPM]/run_spm12.sh [pathToMCRv93] adjust_input_long [pathTo files of cat12_joint_pipeline/batch/longitudinal-v1742/cat12_complete_joint_pipeline_longitudinal.mat] \    
         [nameForBatchfileToGenerate] [mprage_T1.nii] ... [mprage_Tn.nii] [spm dir to replace in job] short
 
     #Execute SPM12 batch

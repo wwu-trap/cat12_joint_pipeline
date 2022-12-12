@@ -21,7 +21,7 @@ wait
 
 # setup spm
 cp ../spm12/* spm12/ 
-cp ../batch/v1742/cat_defaults.m cat12/ 
+cp ../batch/longitudinal-v1742/cat_defaults.m cat12/ 
 mv cat12 spm12/toolbox
 mv spm12 $pipeName
 cd ..
@@ -30,7 +30,7 @@ cd ..
 $matlabBin -nodisplay -nodesktop -r "make_cjp9_long('$(readlink -e pipeline/$pipeName)')"
 
 mv pipeline/standalone "pipeline/standalone_"${pipeName}
-cp batch/v1742/*.mat batch/v1742/*.txt "pipeline/standalone_"${pipeName}
+cp batch/longitudinal-v1742/*.mat batch/longitudinal-v1742/*.txt "pipeline/standalone_"${pipeName}
 
 echo "Done. Have fun!"
 
