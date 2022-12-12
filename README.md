@@ -33,11 +33,11 @@
 
 ## longitudinal data 
 
-### How to setup and compile the cat12 pipeline longitudinal (current version: [tba]-spm12_v7771-cat12_r1742) using make-script
+### How to setup and compile the cat12 pipeline longitudinal (current version: cjp_v0009long-spm12_v7771-cat12_r1742) using make-script
 1. Please make sure you have installed MATLAB 2017b
 2. run `make_cjp9-long.sh [path to your MATLAB 2017b executable]`
 
-### How to use the cat12 pipeline longitudinal (current version: [tba]-spm12_v7771-cat12_r1742)
+### How to use the cat12 pipeline longitudinal (current version: cjp_v0009long-spm12_v7771-cat12_r1742)
 Please note, that Matlab 2019 showed some issues with the longitudinal stream in compiled SPM. Matlab R2017b however works fine, so we use it.
 
 1. Setup MATLAB 2017 (v93)
@@ -46,7 +46,7 @@ Please note, that Matlab 2019 showed some issues with the longitudinal stream in
 2. setup your spm12/cat12 installation by either downloading the precompiled version or follow the steps below
 3. TODO
 
-### How to setup the compiled cat12 pipeline longitudinal (current version: [tba]-spm12_v7771-cat12_r1742)
+### How to setup the compiled cat12 pipeline longitudinal (current version: cjp_v0009long-spm12_v7771-cat12_r1742)
 1. Download spm12 build v7771: https://www.fil.ion.ucl.ac.uk/spm/download/restricted/eldorado/spm12.zip (can be different in the future)
 2. Download and extract cat12.7 (stable) build v1720: http://www.neuro.uni-jena.de/cat12/cat12_r1720.zip into the toolbox dir of spm12
 3. add the files from the **spm12** dir in this repo to the root dir of your local spm12 installation
@@ -59,7 +59,7 @@ Please note, that Matlab 2019 showed some issues with the longitudinal stream in
    7. execute spm_make_standalone in matlab
    8. if the warning `Warning: A startup.m has been detected in /home/ksarink/matlab.` shows up, please make sure to delete (or move) the startup.m file during the compiling process since this file can break the compiled version
 
-### How to run the compiled cat12 pipeline longitudinal (current version: [tba]-spm12_v7771-cat12_r1742)
+### How to run the compiled cat12 pipeline longitudinal (current version: cjp_v0009long-spm12_v7771-cat12_r1742)
 1. Get the compiled spm and cat12 (see above)
 2. Get Matlab runtime v93 (=R2017b)
    1. Linux 64bit: `wget https://ssd.mathworks.com/supportfiles/downloads/R2017b/deployment_files/R2017b/installers/glnxa64/MCR_R2017b_glnxa64_installer.zip`
