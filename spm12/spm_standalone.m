@@ -26,7 +26,7 @@ exit_code = 0;
 switch lower(action)
     
     case {'adjust_input'}
-        if nargin ~= 5
+        if nargin < 5
             fprintf('Correct syntax is: adjust_input [input mat] [output mat] [input nifti] [spm dir which needs to be replaced]\n');
             exit_code = 1;
         else
@@ -47,6 +47,82 @@ switch lower(action)
             else
                 fprintf('Either [input mat] does not exist or [output mat] exists already\n')
                 exit_code = 1;
+            end
+        end
+    case {'adjust_input_long'}
+        if nargin < 7
+            % where nifti 1 .. n are the niftis to be longitudinal
+            % processed
+            fprintf('Correct syntax is: adjust_input [input mat] [output mat] [input nifti 1] (...) [input nifti n] [spm dir which needs to be replaced] [short|long]\n');
+            exit_code = 1;
+        else
+            inFile = varargin{2};
+            outFile = varargin{3};
+            niftis = {varargin{4:end-2}};
+            oldspmdir = varargin{end-1};
+            mode = varargin{end};
+            
+            if isfile(inFile) && ~isfile(outFile)
+                job = load(inFile);
+                matlabbatch = job.matlabbatch;
+                matlabbatch = deepreplace(matlabbatch, oldspmdir, strcat(fullfile(spm('dir')), '/'));
+                % These should be relevlant file locations / prefixes                
+                LONGPREFIX = strcat(filesep,'mri',filesep,'mwmwp1r');
+                SHORTPREFIX = strcat(filesep,'mri',filesep,'mwp1r');
+                LHPREFIX =strcat(filesep,'surf',filesep,'lh.central.r');
+                TCKPREFIX=strcat(filesep,'surf',filesep,'lh.thickness.r');
+                
+                switch lower(mode)
+                    case {'long'}
+                        matlabbatch{1}.spm.tools.cat.long.longmodel = 2;
+                        outPrefix = LONGPREFIX;
+                    case {'short'}
+                        matlabbatch{1}.spm.tools.cat.long.longmodel = 1;
+                        outPrefix = SHORTPREFIX;
+                    otherwise 
+                        exit_code = 1;
+                        error('Unkown model option. Please use "short" for small intervalls, "long" for large intervals.');
+                end
+                %
+                for k=1:length(niftis)
+                        sub{k,1} = [niftis{k} ',1'];
+                        [subjectDir{k} subjectName{k} subjectExt{k}] = fileparts(niftis{k});
+                        lhcent{k,1} = strcat(subjectDir{k},LHPREFIX,subjectName{k},'.gii');
+                        lhthick{k,1} = strcat(subjectDir{k},TCKPREFIX,subjectName{k});
+                end
+                % todo:
+                % * add Rois surface stuff...
+                
+                % (1) segment
+                matlabbatch{1}.spm.tools.cat.long.datalong.subjects{1} = sub;
+                % (2) extract. add surf
+                matlabbatch{2}.spm.tools.cat.stools.surfextract.data_surf = lhcent;
+                % (3-5) Resample & smooth 1-3; 
+                %      only for the first three resample jobs thickness is used
+               for smoothy=3:5
+                           matlabbatch{smoothy}.spm.tools.cat.stools.surfresamp.sample{1,1}.data_surf = lhthick;                        
+               end
+                % 6-11 can be omitted by using dependencies
+                % ...
+                % smooth 12,13,14,15 (6mm/8mm/10mm/12mm)
+                for smoothy=12:15
+			matlabbatch{smoothy}.spm.spatial.smooth.data = {};
+                      for k=1:length(subjectDir)
+                          matlabbatch{smoothy}.spm.spatial.smooth.data{k,1} = strcat(subjectDir{k},outPrefix,subjectName{k},'.nii,1');
+                      end
+                end
+                % Extract Surfaces Rois
+                % 16 can be done via dependency
+                % 17 is thickness form seg
+                matlabbatch{17}.spm.tools.cat.stools.surf2roi.cdata{1} = lhthick; 
+                disp('Using the following paths in given batch with this spm installation')
+                deepstrdisp(matlabbatch, '/')
+                save(outFile, 'matlabbatch');
+                exit(0)
+            else
+                fprintf('Either [input mat] does not exist or [output mat] exists already\n')
+                exit_code = 1;
+                
             end
         end
     case {'','pet','fmri','eeg','quit'}
