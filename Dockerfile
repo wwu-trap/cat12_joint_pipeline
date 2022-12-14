@@ -75,7 +75,7 @@ ENV BATCH_TEMPLATE_PATH /opt/cjp8-batch-template.mat
 
 
 RUN mkdir /scripts/
-COPY ./batch/cat12_complete_joint_pipeline.mat ${BATCH_TEMPLATE_PATH}
+COPY ./batch/crosssectional-v1720/cat12_complete_joint_pipeline.mat ${BATCH_TEMPLATE_PATH}
 COPY ./docker/* /scripts/
 RUN chmod +r -R /scripts/ && chmod +x /scripts/*.sh
 
