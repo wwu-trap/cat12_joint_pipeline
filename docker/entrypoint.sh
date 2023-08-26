@@ -175,6 +175,16 @@ fi
 SPMDIR="/opt/cjp_v0008-spm12_v7771-cat12_r1720"
 BATCH_TEMPLATE_REPLACE_PATH="/spm-data/Scratch/spielwiese_kelvin/cat12_joint_pipeline/cjp_v0008-spm12_v7771-cat12_r1720-modifiedcatdefaults/"
 PATIENT_ID=$(basename "$1" | sed -E 's/\.nii(\.gz)?$//g')
+
+# Check if file has already been processed
+FINAL_OUT_DIR="/out/finished/${PATIENT_ID}"
+if [ -d "$FINAL_OUT_DIR" ]; then
+    ewarn "$FINAL_OUT_DIR already exists! Not preprocessing but checking if all files are present"
+    qualitycheck
+    cleanup_and_exit 101
+fi
+
+# Create directory in /out/
 if [ -n "$SLURM_JOB_NAME" ] && [ -n "$SLURM_JOB_ID" ]; then
     OUT_DIR="/out/inprogress/${PATIENT_ID}_${SLURM_JOB_NAME}-${SLURM_JOB_ID}"
 else 
@@ -182,14 +192,6 @@ else
 fi
 PATH_TO_T1_NIFTI="${OUT_DIR}/$(basename "$1" | sed -E 's/\.gz$//g')"
 einfo "Output directory: $OUT_DIR"
-
-if [ -d "$OUT_DIR" ]; then
-    ewarn "$OUT_DIR already exists! Not preprocessing but checking if all files are present"
-    qualitycheck
-    cleanup_and_exit 101
-fi
-
-# Create directory in /out/
 if ! mkdir -p "$OUT_DIR"; then
     eerror "Could not write to /out/ and create output directory! Please check of /out/ is mounted correctly."
     cleanup_and_exit 15
