@@ -177,9 +177,9 @@ BATCH_TEMPLATE_REPLACE_PATH="/spm-data/Scratch/spielwiese_kelvin/cat12_joint_pip
 PATIENT_ID=$(basename "$1" | sed -E 's/\.nii(\.gz)?$//g')
 
 # Check if file has already been processed
-FINAL_OUT_DIR="/out/finished/${PATIENT_ID}"
-if [ -d "$FINAL_OUT_DIR" ]; then
-    ewarn "$FINAL_OUT_DIR already exists! Not preprocessing but checking if all files are present"
+OUT_DIR="/out/finished/${PATIENT_ID}"
+if [ -d "$OUT_DIR" ]; then
+    ewarn "$OUT_DIR already exists! Not preprocessing but checking if all files are present"
     qualitycheck
     cleanup_and_exit 101
 fi
