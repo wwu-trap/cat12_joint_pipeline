@@ -1,4 +1,4 @@
-function make_cjp9_long(baseFolder)
+function make_cjp(baseFolder)
 
 if ~strcmp(version('-release'),'2017b')
     warning('You should provide Matlab R2017b! Not Safe here, bye.')
