@@ -20,6 +20,7 @@ if [ $2 == "-spmfolder" ]; then
 	cp -r "$3" spm12/ 
 	# if needed, switch off expertgui to prevent warnings
 	sed -i 's|cat.extopts.expertgui = 1|cat.extopts.expertgui = 0|g' spm12/toolbox/cat12/cat_defaults.m
+	sed -i 's|if isdeployed, expert = 1|if isdeployed, expert = 0|g' spm12/toolbox/cat12/tbx_cfg_cat.m
 else
 	(wget $dSPM && unzip $(basename $dSPM) && rm $(basename $dSPM)) & 
 	(wget $dCAT && unzip $(basename $dCAT) && rm $(basename $dCAT))

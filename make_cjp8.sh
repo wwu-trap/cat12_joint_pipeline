@@ -27,7 +27,7 @@ mv spm12 $pipeName
 cd ..
 
 # compile it
-$matlabBin -nodisplay -nodesktop -r "make_cjp8('$(readlink -e pipeline/$pipeName)')"
+$matlabBin -nodisplay -nodesktop -r "make_cjp('$(readlink -e pipeline/$pipeName)')"
 
 mv pipeline/standalone "pipeline/standalone_"${pipeName}
 cp batch/crosssectional-v1720/*.mat batch/crosssectional-v1720/*.txt "pipeline/standalone_"${pipeName}
