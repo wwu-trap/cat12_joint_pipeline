@@ -71,7 +71,7 @@ if [[ $# -gt 2 ]]; then intParam=$1
 # otherwise it's Kelvins stuff
 else
     modality=adjust_input
-    [ -z "$theJob" ] && theJob=cat12_enigma-sct_pipeline.mat
+    [ -z "$theJob" ] && theJob=cat12_complete_joint_pipeline.mat
     intParam=""
     echo Using enigma pipeline.... $@
 fi
