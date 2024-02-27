@@ -166,7 +166,7 @@ if [ ! -f "$1" ]; then
     eerror "Error in argument: path to T1w image file does not exist!"
     cleanup_and_exit 13
 fi
-if [[ "$1" != *".nii" ]] && [[ "$1" != *".nii.gz" ]] || [[ "$1" != "/srv/input/*" ]]; then
+if [[ "$1" != *".nii" ]] && [[ "$1" != *".nii.gz" ]] || [[ "$1" != "/srv/input/"* ]]; then
     eerror "Error in argument: T1w image file must be a .nii or .nii.gz file and in /srv/input/ dir!"
     cleanup_and_exit 14
 fi
