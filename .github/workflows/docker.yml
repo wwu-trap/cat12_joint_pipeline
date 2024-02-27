@@ -1,0 +1,29 @@
+# Workflow for building the container
+name: Build the cjpv8 container
+
+on:
+  # Runs on pushes targeting docker branch
+  push:
+    branches: ["docker"]
+
+jobs:
+  # Build job
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Docker Meta
+        id: meta
+        run: echo "tags=$(date +'ghcr.io/wwu-trap/cjp8:container-%Y-%m-%d')" >> $GITHUB_OUTPUT
+
+      - name: Login to GitHub Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
