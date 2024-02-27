@@ -50,7 +50,7 @@ function cleanup_and_exit () {
         rm -rf "$PATH_TO_T1_NIFTI"
 
         # Move output dir when pipeline succeeded
-        FINAL_OUT_DIR="/out/finished/${PATIENT_ID}"
+        FINAL_OUT_DIR="/srv/output/finished/${PATIENT_ID}"
         mkdir -p "$(dirname "$FINAL_OUT_DIR")"
         if [ -d "$FINAL_OUT_DIR" ]; then
             eerror "Final output dir ${FINAL_OUT_DIR} already exists, keeping ${OUT_DIR}!"
@@ -166,8 +166,8 @@ if [ ! -f "$1" ]; then
     eerror "Error in argument: path to T1w image file does not exist!"
     cleanup_and_exit 13
 fi
-if [[ "$1" != *".nii" ]] && [[ "$1" != *".nii.gz" ]] || [[ "$1" != "/in/"* ]]; then
-    eerror "Error in argument: T1w image file must be a .nii or .nii.gz file and in /in/ dir!"
+if [[ "$1" != *".nii" ]] && [[ "$1" != *".nii.gz" ]] || [[ "$1" != "/srv/input/*" ]]; then
+    eerror "Error in argument: T1w image file must be a .nii or .nii.gz file and in /srv/input/ dir!"
     cleanup_and_exit 14
 fi
 
@@ -177,23 +177,23 @@ BATCH_TEMPLATE_REPLACE_PATH="/spm-data/Scratch/spielwiese_kelvin/cat12_joint_pip
 PATIENT_ID=$(basename "$1" | sed -E 's/\.nii(\.gz)?$//g')
 
 # Check if file has already been processed
-OUT_DIR="/out/finished/${PATIENT_ID}"
+OUT_DIR="/srv/output/finished/${PATIENT_ID}"
 if [ -d "$OUT_DIR" ]; then
     ewarn "$OUT_DIR already exists! Not preprocessing but checking if all files are present"
     qualitycheck
     cleanup_and_exit 101
 fi
 
-# Create directory in /out/
+# Create directory in /srv/output/
 if [ -n "$SLURM_JOB_NAME" ] && [ -n "$SLURM_JOB_ID" ]; then
-    OUT_DIR="/out/inprogress/${PATIENT_ID}_${SLURM_JOB_NAME}-${SLURM_JOB_ID}"
+    OUT_DIR="/srv/output/inprogress/${PATIENT_ID}_${SLURM_JOB_NAME}-${SLURM_JOB_ID}"
 else 
-    OUT_DIR="/out/inprogress/${PATIENT_ID}_$(uuidgen)"
+    OUT_DIR="/srv/output/inprogress/${PATIENT_ID}_$(uuidgen)"
 fi
 PATH_TO_T1_NIFTI="${OUT_DIR}/$(basename "$1" | sed -E 's/\.gz$//g')"
 einfo "Output directory: $OUT_DIR"
 if ! mkdir -p "$OUT_DIR"; then
-    eerror "Could not write to /out/ and create output directory! Please check of /out/ is mounted correctly."
+    eerror "Could not write to /srv/output/ and create output directory! Please check of /srv/output/ is mounted correctly."
     cleanup_and_exit 15
 fi
 
