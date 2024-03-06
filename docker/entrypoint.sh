@@ -181,7 +181,7 @@ OUT_DIR="/srv/output/finished/${PATIENT_ID}"
 if [ -d "$OUT_DIR" ]; then
     ewarn "$OUT_DIR already exists! Not preprocessing but checking if all files are present"
     qualitycheck
-    cleanup_and_exit 101
+    cleanup_and_exit 0
 fi
 
 # Create directory in /srv/output/

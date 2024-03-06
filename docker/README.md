@@ -6,7 +6,7 @@
 
 ## Example with Apptainer
 ```
-apptainer run --bind <path-to-file>:/srv/input --bind <path-to-mcr-v96>:/opt/mcr/v96 --bind <path-to-output-dir>:/srv/output docker://ghcr.io/wwu-trap/cjp8:container-v0.2.8 /in/<file>
+apptainer run --bind <path-to-file>:/srv/input --bind <path-to-mcr-v96>:/opt/mcr/v96 --bind <path-to-output-dir>:/srv/output docker://ghcr.io/wwu-trap/cjp8:container-2024-03-06 /srv/input/<file>
 ```
 
 ## Exit codes
@@ -23,4 +23,3 @@ apptainer run --bind <path-to-file>:/srv/input --bind <path-to-mcr-v96>:/opt/mcr
 |   18 | spm12 preprocessing pipeline failed                                                    |
 |   19 | Missing files in output directory                                                      |
 |   20 | Final output dir already exists                                                        |
-|  101 | $FINAL_OUT_DIR already exists! Not preprocessing but checking if all files are present |
